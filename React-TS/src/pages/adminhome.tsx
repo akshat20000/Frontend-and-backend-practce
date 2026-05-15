@@ -20,6 +20,7 @@ export default function AdminHome() {
             }}></img>
             <p>{user.name}</p>
             </div>
+            <div><Button/></div>
         </>
     )
 }
