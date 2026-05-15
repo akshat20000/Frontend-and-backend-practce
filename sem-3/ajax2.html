@@ -1,0 +1,98 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax 2</title>
+</head>
+<style>
+    body {
+        background-color: black;
+    }
+
+    #cardarray {
+        display: flex;
+        flex-wrap: wrap;
+
+
+    }
+
+    #card {
+        padding: 5px;
+            margin: 10px;
+            background-color: white;
+            border-radius: 5px;
+            width: 300px;
+    }
+
+    #img {
+        height: 300px;
+        width: 300px;
+    }
+
+    #text {
+        color: red;
+    }
+
+    #search {
+        background-color: aliceblue;
+        width: 100%;
+        height: 20px;
+        padding: 5px;
+    }
+</style>
+
+<body>
+    <input id="search" />
+
+
+    <div id="cardarray">
+
+    </div>
+</body>
+<script>
+    let request = new XMLHttpRequest();
+    request.open("get", "https://feecq.github.io/api/movies.json", false);
+    request.send();
+    let array = JSON.parse(request.response);
+    console.log(array)
+    let cardarray = document.getElementById("cardarray");
+    const search = document.getElementById("search");
+    array.forEach(element => {
+        let card = document.createElement("div")
+        card.id = "card"
+        let img = document.createElement("img")
+        img.id = "img"
+        img.src = element.image
+        let title = document.createElement("p")
+        title.innerText = element.movie
+        title.id = "text";
+        let rate = document.createElement("p")
+        rate.innerText = element.rating
+        rate.id = "text"
+        let imbd = document.createElement("a")
+        imbd.href = element.imdb_url
+        imbd.innerText = "IMDB"
+        imbd.id = "text"
+        card.appendChild(img)
+        card.appendChild(title)
+        card.appendChild(rate)
+        card.appendChild(imbd)
+        cardarray.appendChild(card)
+
+    });
+
+
+</script>
+
+</html> 
+
+
+
+
+
+
+
+
+

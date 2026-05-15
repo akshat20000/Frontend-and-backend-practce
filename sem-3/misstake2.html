@@ -1,0 +1,105 @@
+<body>
+    <div id="inputArea">
+        <h2 align="center">Employee Registration</h2>
+        Employee Name: <input type="text" id="name"/> <br/><br/>
+        Date of Birth: <input type="date" id="dob"/><br/><br/>
+        Email Address: <input type="email" id="email"/><br/><br/>
+        Contact Number: <input type="number" id="contactNumber"/><br/><br/>
+        Address: <input type="text" id="address"/><br/><br/>
+        Previous Employer Name: <input type="text" id="empName"/><br/><br/>
+        Total Work Experience: <input type="number" id="workExp"/><br/><br/>       
+        Technical Skills: <input type="text" id="techSkill"/><br><br>
+        <input type="button" value="Submit" id="btnSubmit"/>
+    </div>
+    <div id="tableArea">
+        <table border="1px" id="empTable">
+            <thead>
+                <tr>
+                    <th>Employee Name</th>
+                    <th>Date of Birth</th>
+                    <th>Email Address</th>
+                    <th>Contact Number</th>
+                    <th>Address</th>
+                    <th>Previous Employer Name</th>
+                    <th>Total Work Experience</th>       
+                    <th>Technical Skills</th>             
+                </tr>
+            </thead>
+            <tbody>
+    
+            </tbody>
+        </table>
+      </div>
+</body>
+<script>
+    let empDetails = []; // Global array to store employee details
+
+    // Function to handle adding a record
+    function addRecord() {
+        // Create a formData object with values from the form
+        let formData = {
+            name: document.getElementById("name").value,
+            birth: document.getElementById("dob").value,
+            email: document.getElementById("email").value,
+            num: document.getElementById("contactNumber").value,
+            add: document.getElementById("address").value,
+            empname: document.getElementById("empName").value,
+            workExp: document.getElementById("workExp").value,
+            techSkill: document.getElementById("techSkill").value,
+        };
+
+        // Add formData to empDetails array
+        empDetails.push(formData);
+
+        // Store empDetails array in localStorage
+        localStorage.setItem("details", JSON.stringify(empDetails));
+
+        // Add the new record to the table
+        addRecordTable(formData);
+
+        // Clear the form inputs
+        document.getElementById("name").value = "";
+        document.getElementById("dob").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("contactNumber").value = "";
+        document.getElementById("address").value = "";
+        document.getElementById("empName").value = "";
+        document.getElementById("workExp").value = "";
+        document.getElementById("techSkill").value = "";
+    }
+
+    // Function to add a record to the table
+    function addRecordTable(record) {
+        const body = document.querySelector("#empTable tbody"); // Select the tbody element
+        const row = document.createElement("tr");
+
+        // Create a cell for each property in the record object
+        for (const key in record) {
+            let cell = document.createElement("td");
+            cell.textContent = record[key];
+            row.appendChild(cell);
+        }
+
+        // Append the row to the table body
+        body.appendChild(row);
+    }
+
+    // Load data from localStorage when the page loads
+    function loadData() {
+        const storedData = localStorage.getItem("details");
+
+        if (storedData) {
+            // Parse stored data and populate empDetails
+            empDetails = JSON.parse(storedData);
+
+            // Add each record to the table
+            empDetails.forEach((record) => {
+                addRecordTable(record);
+            });
+        }
+    }
+
+    // Add event listener for page load and form submission
+    window.addEventListener("load", loadData);
+    document.getElementById("btnSubmit").addEventListener("click", addRecord);
+</script>

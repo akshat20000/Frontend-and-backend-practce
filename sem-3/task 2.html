@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #popped{
+             height: 300px;
+             width: 300px;
+             position:absolute;
+             top: 30%;
+             left: 25%;
+             display: none;
+             border: 2px solid black;
+             background-color: aqua;
+         }
+         #close{
+            position: relative;
+            left: 92%;
+         }
+         
+    </style>
+</head>
+<body>
+    <!-- <button id="click">
+        pop
+    </button> -->
+    <h1 id = "click">  neelesh kulkarni</h1>
+   
+    <div id="popped">
+        <button id="close">
+            X
+        </button>
+        <h1>Neelesh Kulkarni</h1>
+        <p>Neelesh Kulkarni is a management graduate from the Faculty of Management, Delhi University, who quit the corporate world in 1985 to start his own company, which he still runs. He is a theatre and voiceover artist with over fifty years of experience, an avid reader and traveller, a poet, a cricket commentator and a public-speaking coach. He lives in Delhi with his artist wife.</p>
+    </div>
+</body>
+<script>
+
+    const pop = document.getElementById("click");
+    const p = document.getElementById("popped");
+    const closing = document.getElementById("close");
+    pop.addEventListener("click",function(){
+        p.style.display = "block";
+        pop.style.backgroundColor ="yellow;"
+    })
+    
+    closing.addEventListener("click",function(){
+     p.style.display = "";
+    })
+</script>
+</html>

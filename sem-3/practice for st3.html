@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #input{
+        text-transform: uppercase;
+    }
+</style>
+<body>
+    <div id="inputArea">
+        <h2 align="center">Employee Registration</h2>
+        Employee Name: <input type="text" id="name"/> <br/><br/>
+        Date of Birth: <input type="date" id="dob"/><br/><br/>
+        Email Address: <input type="email" id="email"/><br/><br/>
+        Contact Number: <input type="number" id="contactNumber"/><br/><br/>
+        Address: <input type="text" id="address"/><br/><br/>
+        Previous Employer Name: <input type="text" id="empName"/><br/><br/>
+        Total Work Experience: <input type="number" id="workExp"/><br/><br/>       
+        Technical Skills: <input type="text" id="techSkill"/><br><br>
+        <input type="button" value="Submit" id="btnSubmit"/>
+    </div>
+    <div id="tableArea">
+        <table border="1" id="empTable">
+            <thead>
+                <tr>
+                    <th>Employee Name</th>
+                    <th>Date of Birth</th>
+                    <th>Email Address</th>
+                    <th>Contact Number</th>
+                    <th>Address</th>
+                    <th>Previous Employer Name</th>
+                    <th>Total Work Experience</th>       
+                    <th>Technical Skills</th>             
+                </tr>
+            </thead>
+            <tbody>
+    
+            </tbody>
+        </table>
+      </div>
+</body>
+<script>
+    let submit=document.getElementById("btnSubmit");
+    function addRecord(){
+      let formData={
+        name: document.getElementById("name").value,
+            birth: document.getElementById("dob").value,
+            email: document.getElementById("email").value,
+            num: document.getElementById("contactNumber").value,
+            add: document.getElementById("address").value,
+            empname: document.getElementById("empName").value,
+            workExp: document.getElementById("workExp").value,
+            techSkill: document.getElementById("techSkill").value,
+      }
+    
+    let empDetails=[].push(formData);
+    localStorage.setItem("details",JSON.stringify(empDetails))
+     addRecordTable(formData);
+     document.getElementById("name").value = "";
+        document.getElementById("dob").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("contactNumber").value = "";
+        document.getElementById("address").value = "";
+        document.getElementById("empName").value = "";
+        document.getElementById("workExp").value = "";
+        document.getElementById("techSkill").value = "";
+    }
+     function addRecordTable(record){
+const body=document.querySelector("#empTable tbody");
+const row=document.createElement("tr");
+for(const key in record){
+    let cell=document.createElement("td");
+    cell.textContent=record[key];
+    row.appendChild(cell);
+}
+body.appendChild(row);
+     }
+     
+
+    submit.addEventListener("click",addRecord);
+</script>
+</html>
