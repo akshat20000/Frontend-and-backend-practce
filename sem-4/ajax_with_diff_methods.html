@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body { background-color: black; color: aliceblue; }
+        #cardArray { display: flex; flex-wrap: wrap; justify-content: space-evenly; }
+        img { height: 300px; width: 300px; }
+        .card { border: 5px solid white; background-color: black; height: 500px; width: 400px; text-align: center; }
+        #search { text-align: center; }
+        #bar { width: 100%; }
+    </style>
+</head>
+<body>
+    <div id="search">
+       <input type="text" id="bar">
+    </div>
+    <br><br>
+    <div id="cardArray"></div>
+    <script>
+        const apiUrl = "https://feecq.github.io/api/movies.json";
+        let movies = [];
+
+        // Fetch GET
+        async function fetchMovies() {
+            try {
+                let response = await fetch(apiUrl);
+                movies = await response.json();
+                createArr(movies);
+            } catch (error) {
+                console.error("Fetch GET Error:", error);
+            }
+        }
+        fetchMovies();
+
+        // Fetch POST Example (Dummy)
+        async function fetchPost() {
+            try {
+                let response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ user: "test", action: "fetch" })
+                });
+                let data = await response.json();
+                console.log("Fetch POST Response:", data);
+            } catch (error) {
+                console.error("Fetch POST Error:", error);
+            }
+        }
+        fetchPost();
+
+        // Axios GET
+        async function axiosGetMovies() {
+            try {
+                let response = await axios.get(apiUrl);
+                console.log("Axios GET Response:", response.data);
+            } catch (error) {
+                console.error("Axios GET Error:", error);
+            }
+        }
+        axiosGetMovies();
+
+        // Axios POST Example (Dummy)
+        async function axiosPostMovies() {
+            try {
+                let response = await axios.post(apiUrl, { user: "test", action: "fetch" });
+                console.log("Axios POST Response:", response.data);
+            } catch (error) {
+                console.error("Axios POST Error:", error);
+            }
+        }
+        axiosPostMovies();
+
+        // Search Functionality
+        document.getElementById("bar").addEventListener("input", function () {
+            let tex = this.value.trim().toLowerCase();
+            let filteredMovies = tex ? movies.filter(m => m.movie.toLowerCase().includes(tex)) : movies;
+            document.getElementById("cardArray").innerHTML = "";
+            createArr(filteredMovies);
+        });
+
+        function createArr(arr) {
+            let cardArray = document.getElementById("cardArray");
+            arr.forEach(element => {
+                let card = document.createElement("div");
+                card.className = "card";
+                let img = document.createElement("img");
+                img.src = element.image;
+                let title = document.createElement("h3");
+                title.innerText = element.movie;
+                let link = document.createElement("a");
+                link.href = element.imdb_url;
+                link.innerText = "IMDB";
+                link.style.color = "red";
+                let rating = document.createElement("p");
+                rating.innerText = "IMDB Rating: " + element.rating;
+                card.append(img, title, link, rating);
+                cardArray.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>

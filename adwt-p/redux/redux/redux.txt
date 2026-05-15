@@ -1,0 +1,35 @@
+iicnivrisdse
+
+import{configureStore,createSlice} from "@reduxjs/toolkit";
+import{useSelector,useDispatcher} from "react-redux";
+const demoSlice=createslice({
+
+name:"demo";
+initialState:{
+value:"0";}
+reducers :{
+increment:(state)=>{
+state.value++;
+}
+decrement:(state)=>
+{
+
+state.value--;
+}
+}
+})
+export const{increment,decrement}=demoSlice.actions;
+function App(){
+const data=useSelector((state)=>state.demo.value);
+
+const dispatch=useDispatcher();
+return{
+
+<>
+<h1>(data)<h1>;
+<button onClick={()=>dispatch(increment())}>ADD</button>;
+<button onClick={()=>dispatch(decrement())}>MINUS</button>;
+</>
+}
+
+}
