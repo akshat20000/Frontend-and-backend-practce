@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #input {
+            border: 3px solid black;
+            height: 300px;
+            width: 100%;
+            
+        }
+    </style>
+</head>
+<body>
+   <textarea id="input" placeholder="type here" spellcheck="false"></textarea> <br/>
+   <div>
+      <select id="size">
+        <option>10</option>
+        <option>14</option>
+        <option>16</option>
+        <option>18</option>
+        <option>20</option>
+      </select>
+      <input type="checkbox" id="bold">B 
+      <input type="checkbox" id="italic">i 
+      <input type="checkbox" id="underline">u
+   </div>
+
+   <script>
+      document.addEventListener("DOMContentLoaded", () => {
+          const text = document.getElementById("input");
+          const select = document.getElementById("size");
+          const bold = document.getElementById("bold");
+          const italic = document.getElementById("italic");
+          const underline = document.getElementById("underline");
+
+          const updateStyle = (property, value1, value2, checkbox) => 
+              text.style[property] = checkbox.checked ? value1 : value2;
+
+          [bold, italic, underline].forEach(el => 
+              el.addEventListener("change", () => {
+                  updateStyle("fontWeight", "bold", "normal", bold);
+                  updateStyle("fontStyle", "italic", "normal", italic);
+                  updateStyle("textDecoration", "underline", "none", underline);
+              })
+          );
+
+          select.addEventListener("change", () => text.style.fontSize = `${select.value}px`);
+      });
+   </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+</head>
+<style>
+    a{
+         font-weight:bold ;
+    }
+</style>
+<body>
+    <h1>Stopwatch</h1><br/>
+    <div>
+        <a id="minute">00</a>
+        <a>::</a>
+        <a id="second">00</a><br/><br/>
+    </div>
+    <button id="start">start</button>
+    <button id="stop">stop</button>
+    <button id="reset">reset</button>
+
+    
+
+    <script>
+        const min = document.getElementById("minute");
+        const sec = document.getElementById("second");
+        const start = document.getElementById("start");
+        const stop = document.getElementById("stop");
+        const reset = document.getElementById("reset");
+
+        let intervalId;
+        let isRunning = false;
+
+        // Start button functionality
+        start.addEventListener("click", function() {
+            if (!isRunning) {
+                isRunning = true;
+                intervalId = setInterval(function() {
+                    sec.innerText = parseInt(sec.innerText) + 1;
+
+                    if (parseInt(sec.innerText) >= 60) {
+                        sec.innerText = "00";
+                        min.innerText = parseInt(min.innerText) + 1;
+                        min.innerText = String(min.innerText).padStart(2, '0');
+                    }
+                    sec.innerText = String(sec.innerText).padStart(2, '0');
+                }, 1000); // Update every second (1000ms)
+            }
+        });
+
+        // Stop button functionality
+        stop.addEventListener("click", function() {
+            clearInterval(intervalId);
+            isRunning = false;
+        });
+
+        // Reset button functionality
+        reset.addEventListener("click", function() {
+            clearInterval(intervalId);
+            isRunning = false;
+            min.innerText = "00";
+            sec.innerText = "00";
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form To Table</title>
+    <style>
+        #user-info{
+            display: flex;
+            justify-content: space-around;
+            flex-direction: column;
+        }
+        #user-info div label{
+            font-size: 24px;
+            margin: 30px;
+        }
+        #user-info input{
+            margin-left: 110px;
+            margin-top: 20px;
+        }
+        select{
+            margin-left: 130px;
+        }
+        #city{
+            margin-left: 140px;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        .submit{
+            text-align: center;
+        }
+        .submit button{
+            border-style: none;
+            background-color: black;
+            color: white;
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        #dataTable{
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            
+        }
+        tbody tr td{
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <form id="user-info">
+        <div class="enterName">
+            <label for="name">Name&nbsp;&nbsp;</label>
+            <input type="text" id="name">
+        </div>
+        <div class="mailId">
+            <label for="emailId">Email&nbsp;&nbsp;</label>
+            <input type="email" id="emailId">
+        </div>
+        <div class="genderInfo">
+            <label for="gender">Gender</label>
+            <input type="radio" id="male" value="Male" name="gender">
+            <label for="gender">Male</label>
+            <input type="radio" id="female" value="Female" name="gender">
+            <label for="gender">Female</label>
+        </div>
+        <div class="subject">
+            <label for="sub">Subject</label>
+            <input type="text" id="sub">
+        </div>
+        <div class="cities">
+            <label for="city">City</label>
+            <select id="city">
+                <option value="India">Baddi</option>
+                <option value="USA">Pinjore</option>
+                <option value="Canada">Panchkula</option>
+                <option value="Australia">Chandigarh</option>
+                <option value="Thailand">Ambala</option>
+            </select>
+        </div>
+        <div class="submit">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+    <div class="data">
+        <h2>Data You've Entered</h2>
+        <table id="dataTable" border="1px">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Gender</th>
+                    <th>Subject</th>
+                    <th>City</th>
+                </tr>
+            </thead>
+            <tbody id="body">
+
+            </tbody>
+        </table>
+    </div>
+    <div class="submit">
+        <button id="clear">Clear Data From Table</button>
+    </div>
+    <script>
+
+        const arr = localStorage.getItem('user');
+        if(JSON.parse(arr)===null){
+            userArr = [];
+        }else{
+            userArr = JSON.parse(arr);
+        }
+        console.log(userArr);
+        table();
+        const tbl = document.getElementById("body");
+        document.getElementById("user-info").addEventListener('submit', function(){
+            event.preventDefault();
+
+            if(!document.getElementById("name").value){
+                alert("name required!");
+                return;
+            }
+            if(!document.getElementById("emailId").value){
+                alert("email required!");
+                return;
+            }
+            
+            let obj = {};
+            obj.name = document.getElementById("name").value;
+            obj.email = document.getElementById("emailId").value;
+            obj.gender = document.querySelector("input[name=gender]:checked").value;
+            obj.subject = document.getElementById("sub").value;
+            obj.city = document.getElementById("city").value;
+            console.log(obj)
+            userArr.push(obj);
+
+            localStorage.setItem('user', JSON.stringify(userArr));
+
+            
+            const tr = document.createElement("tr");
+
+            let name = obj.name;
+            let email = obj.email;
+            let gender = obj.gender;
+            let subject = obj.subject;
+            let city = obj.city;
+                
+            tr.append(tableData(name));
+            tr.append(tableData(email));
+            tr.append(tableData(gender));
+            tr.append(tableData(subject));
+            tr.append(tableData(city));
+
+            tbl.append(tr);
+            this.reset();
+        });
+        function table(){
+            const tbl = document.getElementById("body");
+            userArr.forEach(function (e){
+                const tr = document.createElement("tr");
+
+                let name = e.name;
+                let email = e.email;
+                let gender = e.gender;
+                let subject = e.subject;
+                let city = e.city;
+                
+                tr.append(tableData(name));
+                tr.append(tableData(email));
+                tr.append(tableData(gender));
+                tr.append(tableData(subject));
+                tr.append(tableData(city));
+
+                tbl.append(tr);
+
+            });
+        }
+        function tableData( value ){
+            const td = document.createElement("td");
+            td.innerText = value;
+            return td;
+        }
+        document.getElementById('clear').addEventListener('click', function(){
+            localStorage.clear();
+            userArr = [];
+
+            while(tbl.firstChild){
+                tbl.removeChild(tbl.firstChild);
+            }
+        });
+
+    </script>
+</body>
+</html>

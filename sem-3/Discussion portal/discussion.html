@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discussion App</title>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.left-pane {
+    width: 30%;
+    background-color: #f0f2f5;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+}
+
+.left-pane h2 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+#questions-list {
+    list-style: none;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+#questions-list li {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+#questions-list li:hover {
+    background-color: #e7e7e7;
+}
+
+.right-pane {
+    width: 70%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.right-pane h2 {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+}
+
+form {
+    width: 100%;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: #fff;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#response-section {
+    display: none;
+    margin-top: 20px;
+    width: 100%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#question-display {
+    margin-bottom: 20px;
+}
+
+#question-display h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+#question-display p {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+#resolve-btn {
+    background-color: #28a745;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+#resolve-btn:hover {
+    background-color: #218838;
+}
+
+#responses-list {
+    list-style: none;
+    margin-top: 10px;
+}
+
+#responses-list li {
+    background-color: #f0f2f5;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+#responses-list li strong {
+    color: #333;
+}
+
+.right-pane h4 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #007bff;
+}
+
+#response-form {
+    margin-top: 10px;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border: 1px solid #007bff;
+}
+
+input::placeholder, textarea::placeholder {
+    font-style: italic;
+    color: #aaa;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-pane">
+            <h2>Questions</h2>
+            <ul id="questions-list">
+                <!-- Questions will be added here -->
+            </ul>
+        </div>
+
+        <div class="right-pane">
+            <div id="question-form-section">
+                <h2>Add a Question</h2>
+                <form id="question-form">
+                    <input type="text" id="question-title" placeholder="Title" required>
+                    <textarea id="question-content" placeholder="Your question..." required></textarea>
+                    <button type="submit">Submit Question</button>
+                </form>
+            </div>
+
+            <div id="response-section" style="display:none;">
+                <div id="question-display">
+                    <h3 id="display-title"></h3>
+                    <p id="display-content"></p>
+                    <button id="resolve-btn">Resolve</button>
+                </div>
+
+                <h4>Responses</h4>
+                <ul id="responses-list">
+                    <!-- Responses will be added here -->
+                </ul>
+
+                <form id="response-form">
+                    <input type="text" id="responder-name" placeholder="Enter Name" required>
+                    <textarea id="response-comment" placeholder="Enter Comment" required></textarea>
+                    <button type="submit">Submit Response</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script >
+        // Handle adding new questions
+document.getElementById('question-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const title = document.getElementById('question-title').value;
+    const content = document.getElementById('question-content').value;
+
+    // Create a new question element in the left pane
+    const questionListItem = document.createElement('li');
+    questionListItem.textContent = title;
+
+    // Store the title and content in the element for later use
+    questionListItem.setAttribute('data-title', title);
+    questionListItem.setAttribute('data-content', content);
+
+    // Append the question to the list
+    document.getElementById('questions-list').appendChild(questionListItem);
+
+    // Clear the form fields
+    document.getElementById('question-title').value = '';
+    document.getElementById('question-content').value = '';
+
+    // Add click event to load the question in the right pane when clicked
+    questionListItem.addEventListener('click', function() {
+        // Show the response section
+        document.getElementById('response-section').style.display = 'block';
+        document.getElementById('question-form-section').style.display = 'none';
+
+        // Set the question display fields
+        document.getElementById('display-title').textContent = this.getAttribute('data-title');
+        document.getElementById('display-content').textContent = this.getAttribute('data-content');
+
+        // Clear previous responses
+        document.getElementById('responses-list').innerHTML = '';
+
+        // Add resolve functionality
+        document.getElementById('resolve-btn').addEventListener('click', function() {
+            alert('Question Resolved');
+            document.getElementById('response-section').style.display = 'none';
+            document.getElementById('question-form-section').style.display = 'block';
+        });
+    });
+});
+
+// Handle adding responses
+document.getElementById('response-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('responder-name').value;
+    const comment = document.getElementById('response-comment').value;
+
+    // Create a new response item
+    const responseItem = document.createElement('li');
+    responseItem.innerHTML = `<strong>${name}</strong><p>${comment}</p>`;
+
+    // Append the response to the list
+    document.getElementById('responses-list').appendChild(responseItem);
+
+    // Clear the response form fields
+    document.getElementById('responder-name').value = '';
+    document.getElementById('response-comment').value = '';
+});
+
+    </script>
+</body>
+</html>

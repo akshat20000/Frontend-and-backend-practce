@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Stopwatch</h1><br/>
+    <div>
+    <h2 id="minute">00</h2>
+    <h2 style="display: inline;">::</h2>
+    <h2 id="second">00</h2><br/>
+</div>
+    <button id="start">start</button><button id="stop">stop</button><button id="reset">reset</button>
+</body>
+<script>
+   const min = document.getElementById("minute");
+   const sec = document.getElementById("second");
+   const start = document.getElementById("start")
+   const stop = document.getElementById("stop")
+   const reset = document.getElementById("reset")
+   const div =document.getElementsByTagName("div");
+   min.style.display="inline";
+   sec.style.display="inline";
+   start.addEventListener("click",function(){
+      setInterval(function(){
+        sec.innerText=parseInt(sec.innerText)+1;
+        if(sec.innerText>=60){
+            sec.innerText=0;
+        min.innerText=parseInt(min.innerText)+1;
+        }
+      },100)
+   })
+</script>
+</html>

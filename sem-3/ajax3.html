@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax 3</title>
+    <style>
+        body {
+            background-color: black;
+            font-family: Arial, sans-serif;
+        }
+        #cardarray {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .card {
+            padding: 5px;
+            margin: 10px;
+            background-color: white;
+            border-radius: 5px;
+            width: 300px;
+        }
+        .img {
+            height: 300px;
+            width: 300px;
+        }
+        .text {
+            color: red;
+        }
+        #search {
+            background-color: aliceblue;
+            width: 100%;
+            height: 30px;
+            padding: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <input id="search" placeholder="Search for a movie..." />
+    
+
+    <div id="cardarray"></div>
+
+    <script>
+        let request = new XMLHttpRequest();
+        request.open("GET", "https://feecq.github.io/api/movies.json", false);
+        request.send();
+        let array = JSON.parse(request.response);
+        let cardarray = document.getElementById("cardarray");
+        const search = document.getElementById("search");
+
+        // Function to create movie cards
+        function displayMovies(movies) {
+            cardarray.innerHTML = ''; // Clear the previous results
+            if (movies.length === 0) {
+                cardarray.innerHTML = '<p style="color: white;">No movies found.</p>'; // Display message if no movies match the search
+            } else {
+                movies.forEach(element => {
+                    let card = document.createElement("div");
+                    card.className = "card";
+                    
+                    let img = document.createElement("img");
+                    img.className = "img";
+                    img.src = element.image;
+
+                    let title = document.createElement("p");
+                    title.innerText = element.movie;
+                    title.className = "text";
+
+                    let rate = document.createElement("p");
+                    rate.innerText = "Rating: " + element.rating;
+                    rate.className = "text"; 
+
+                    let imdb = document.createElement("a");
+                    imdb.href = element.imdb_url;
+                    imdb.innerText = "IMDB";
+                    imdb.className = "text";
+                    imdb.target = "_blank"; // Open IMDB in a new tab
+
+                    card.appendChild(img);
+                    card.appendChild(title);
+                    card.appendChild(rate);
+                    card.appendChild(imdb);
+                    cardarray.appendChild(card);
+                });
+            }
+        }
+
+        // Display all movies initially
+        displayMovies(array);
+
+        // Add search functionality
+        search.addEventListener("input", function() {
+            let query = search.value.toLowerCase();
+            let filteredMovies = array.filter(movie => movie.movie.toLowerCase().includes(query));
+            displayMovies(filteredMovies);
+        });
+    </script>
+</body>
+</html>
+

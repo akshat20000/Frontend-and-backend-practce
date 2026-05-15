@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practice</title>
+</head>
+<style>
+    body{
+        display: flex;
+        height: 100vh;
+        width: 100%;
+    }
+    #out{
+        height: 100%;
+        width: 50%;
+        background-color: black;
+        color: aliceblue;
+    }
+#right{
+    height: 100%;
+     width: 50%;
+}
+</style>
+<body>
+    <div id="out">
+<h1>TO DO LIST</h1>
+    </div>
+    <div id="right">
+    <input type="text" id="input"/><button id="add">Add</button>
+</div>
+</body>
+<script>
+const add=document.getElementById("add");
+const out=document.getElementById("out")
+let input=document.getElementById("input");
+let taskarray=[];
+add.addEventListener("click",function(){
+    
+    let taskvalue=input.value;
+    if(taskvalue){
+        let task= document.createElement("p");
+        task.textContent=taskvalue
+        let close = document.createElement("button");
+        close.innerText = "X"
+        close.style.backgroundColor="red"
+        
+        close.style.height="20px"
+        close.style.width="20px"
+
+    
+let taskob={
+    taskname:taskvalue
+}
+console.log(taskarray)
+taskarray.push(taskob)
+out.appendChild(task)
+task.appendChild(close)
+input.value=''
+localStorage.setItem('task',JSON.stringify(taskarray))
+close.addEventListener("click",function(){
+    task.remove()
+})
+}
+
+else{
+    alert("enter a task")
+}
+
+})
+
+</script>
+</html>

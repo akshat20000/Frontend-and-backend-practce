@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax Example</title>
+    <style>
+        /* Center the table on the page */
+        table {
+            width: 50%;
+            margin: 50px auto;
+            border-collapse: collapse;
+        }
+
+        /* Style the table headers and cells */
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        /* Style the table header */
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Id</th>
+            </tr>
+        </thead>
+        <tbody id="userTable">
+            <!-- Rows will be dynamically inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        let request = new XMLHttpRequest();
+        request.open("get", "https://feecq.github.io/api/users.json", false);
+        request.send();
+
+        let users = JSON.parse(request.response);
+        console.log(users);  // Check the structure of the fetched data in the console
+
+        // Assuming the array of users is directly available in the JSON response
+        users.forEach(user => {
+            let tableBody = document.getElementById("userTable");
+            
+            // Create a row (tr) and two cells (td) for name and email
+            let row = document.createElement("tr");
+            let nameCell = document.createElement("td");
+            let emailCell = document.createElement("td");
+            let id=document.createElement("td")
+
+            // Set the text content of the cells
+            nameCell.textContent = user.name || "No name";  // Default to "No name" if no name is provided
+            emailCell.textContent = user.email || "No email";  // Default to "No email" if no email is provided
+            id.textContent = user.id || "No id";  // Default to "No email" if no email is provided
+
+
+            // Append the cells to the row
+            row.appendChild(nameCell);
+            row.appendChild(emailCell);
+            row.appendChild(id);
+
+            // Append the row to the table body
+            tableBody.appendChild(row);
+        });
+    </script>
+</body>
+</html>
