@@ -1,14 +1,14 @@
 import "../style/button.css"
-import { useState } from 'react' 
-export default function Button(){
-    const [count,setcount] = useState(0)
-    function handleclick(){
-        setcount(count+1);
-    }
+type buttonprop={
+    count: number,
+    onClick: ()=>void,
+
+}
+export default function Button({count,onClick}:buttonprop){
     return(
         <>
         <div>
-        <button className="mybutton" onClick={handleclick}>i am a button</button>
+        <button className="mybutton" onClick={onClick}>i am a button</button>
         <h3>clicked {count} times</h3>
         </div>
         </>
