@@ -14,11 +14,13 @@ function Square({ value, onSquareClick }:Squaretype) {
   );
 }
 
+type BoardProps={
+  xIsNext:boolean;
+  squares:(string|null)[];
+  onPlay:(squares:(string|null)[])=>void
+}
 
-
-function Index() {
-    const [xIsNext, setXIsNext] = useState(true);
-    const [squares,setSquares] = useState<(string | null)[]>(Array(9).fill(null))
+function Board({xIsNext,squares,onPlay}:BoardProps) {
 
     function handleClick(i:number) {
     if(squares[i] || calculateWinner(squares)){
@@ -30,8 +32,9 @@ function Index() {
     } else {
       nextSquares[i] = "O";
     }
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);
+    // setSquares(nextSquares);
+    // setXIsNext(!xIsNext);
+    onPlay(nextSquares);
 
   }
    const winner = calculateWinner(squares);
@@ -65,7 +68,52 @@ function Index() {
     )
 }
 
-export default Index;
+function Game(){
+  //const [XisNext,SetXisNext] = useState(true);
+  const [history,sethistory] = useState<(string|null)[][]>([Array(9).fill(null)]);
+  const [currentMove,setCurrentMove] = useState(0);
+  const curretSquare = history[currentMove];
+  const XisNext =currentMove % 2 ===0;
+
+  function handlePlay(nextSquares:(string|null)[]){
+    const nextHistory = [...history.slice(0,currentMove+1),nextSquares];
+    sethistory(nextHistory)
+    setCurrentMove(nextHistory.length-1)
+    //SetXisNext(!XisNext)
+  }
+
+  function jumpTo(nextMove:number){
+    setCurrentMove(nextMove)
+    //SetXisNext(nextMove % 2 ===0);
+  }
+
+  const moves = history.map((squares,move)=>{
+    let description;
+    if(move > 0){
+      description = 'Go to move #' + move;
+    }else{
+      description = 'Go to game start'
+    }
+    return(
+      <li key={move}>
+        <button onClick={()=> jumpTo(move)} > {description}</button>
+      </li>
+    )
+  })
+  return(
+    <>
+     <div className="game">
+      <div className="game-board">
+        <Board xIsNext={XisNext} squares={curretSquare} onPlay={handlePlay} />
+      </div>
+      <div className="game-info">
+        <ol>{moves}</ol>
+      </div>
+    </div>
+    </>
+  )
+}
+export default Game;
 function calculateWinner(squares:(string | null)[]) {
   const lines = [
     [0, 1, 2],

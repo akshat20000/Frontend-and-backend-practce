@@ -21,11 +21,11 @@ import './App.css'
 //   )
 // }
 
-import Index from './tic-tac-toe/index'
+import Game from './tic-tac-toe/index'
 function App() {
   return(
     <>
-    <Index></Index>
+    <Game></Game>
     </>
   )
 }
